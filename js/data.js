@@ -9,7 +9,7 @@ const OFFERSCOUNT = 10;
 const types = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
 const Price = {
-  MIN: 1000,
+  MIN: 0,
   MAX: 100000,
 };
 
@@ -42,7 +42,7 @@ const titles = [
 
 const times = ['12:00', '13:00', '14:00'];
 
-const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 const photos = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg' ,
@@ -90,7 +90,7 @@ const createOffer = () => ({
   guests: getRandomInt(Room.MIN, Room.MAX),
   checkin: getRandomArrayElement(times),
   checkout: getRandomArrayElement(times),
-  features: features.slice(0, getRandomInt(0, features.length)),
+  features: featuresList.slice(0, getRandomInt(0, featuresList.length)),
   description: getRandomArrayElement(descriptions),
   photos: Array.from({length: getRandomInt(0, 10)} , () => getRandomArrayElement(photos)),
 });
@@ -106,7 +106,6 @@ const createObj = (el, index) => ({
   location: createLoc(),
 });
 
-const objects = () => Array.from({length: OFFERSCOUNT}, createObj);
-objects();
+const createObjects = () => Array.from({length: OFFERSCOUNT}, createObj);
 
-export { objects };
+export { createObjects };
