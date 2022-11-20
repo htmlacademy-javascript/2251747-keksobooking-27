@@ -1,2 +1,1 @@
-import { objects } from './data.js';
-objects();
+import './card.js';
