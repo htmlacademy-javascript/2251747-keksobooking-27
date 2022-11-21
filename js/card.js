@@ -19,7 +19,7 @@ const typeDict = {
 const selectorDict = {
   title: '.popup__title',
   address: '.popup__text--address',
-  price: '.popup__text--price',
+  price: '.text-price',
   description: '.popup__description',
 };
 
