@@ -122,9 +122,9 @@ adformEl.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    console.log('Готово к отправке');
+    //console.log('Готово к отправке');
   } else {
-    console.log(pristine.getErrors());
+    //console.log(pristine.getErrors());
   }
 });
 
