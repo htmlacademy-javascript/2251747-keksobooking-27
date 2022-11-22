@@ -1,6 +1,5 @@
 import {createObjects} from './data.js';
 
-const mapCanvas = document.querySelector('#map-canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const imgTemplate = document.querySelector('#card').content.querySelector('.popup__photo');
 
@@ -68,4 +67,4 @@ objectsList.forEach(({author, offer}) => {
   cardFragment.appendChild(cardElement);
 });
 
-mapCanvas.appendChild(cardFragment);
+export { objectsList };
