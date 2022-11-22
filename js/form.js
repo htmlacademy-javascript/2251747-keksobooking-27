@@ -1,18 +1,18 @@
-const roomsToGuests = {
+const RoomsToGuests = {
   1: ['1'],
   2: ['1', '2'],
   3: ['1','2','3'],
   100: ['0'],
 };
 
-const guestsToRooms = {
+const GuestsToRooms = {
   0: ['100'],
   1: ['1','2','3'],
   2: ['2','3'],
   3: ['3'],
 };
 
-const typesToPrice = {
+const TypesToPrice = {
   bungalow: 0,
   flat: 1000,
   hotel: 3000,
@@ -67,18 +67,18 @@ const pristine = new Pristine(
 );
 
 const validateCapacity = () =>
-  roomsToGuests[roomNumberEl.value].includes(capacityEl.value);
+  RoomsToGuests[roomNumberEl.value].includes(capacityEl.value);
 const validatePrice = (value) =>
-  value >= typesToPrice[typeEl.value] && value <= typesToPrice.max;
+  value >= TypesToPrice[typeEl.value] && value <= TypesToPrice.max;
 
 const getCapacityErrorMessage = () =>
-  `Указанное количество комнат вмещает ${roomsToGuests[roomNumberEl.value].join('или')}гостей.`;
+  `Указанное количество комнат вмещает ${RoomsToGuests[roomNumberEl.value].join('или')}гостей.`;
 
 const getRoomNumberErrorMessage = () =>
-  `Для указанного количества гостей требуется ${guestsToRooms[capacityEl.value].join('или')}комнаты.`;
+  `Для указанного количества гостей требуется ${GuestsToRooms[capacityEl.value].join('или')}комнаты.`;
 
 const getPriceErrorMessage = () =>
-  `Минимальная цена для этого типа жилья ${typesToPrice[typeEl.value]} руб.`;
+  `Минимальная цена для этого типа жилья ${TypesToPrice[typeEl.value]} руб.`;
 
 const onCapacityChange = () => {
   pristine.validate(capacityEl);
@@ -117,15 +117,4 @@ pristine.addValidator(
   validatePrice,
   getPriceErrorMessage,
 );
-
-adformEl.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) {
-    //console.log('Готово к отправке');
-  } else {
-    //console.log(pristine.getErrors());
-  }
-});
-
 export {disableForm, enableForm};
