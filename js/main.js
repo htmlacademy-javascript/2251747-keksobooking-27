@@ -1,2 +1,3 @@
 import './card.js';
-import './form.js';
+import {enableForm} from './form.js';
+enableForm();
