@@ -1,12 +1,5 @@
-import {createObjects} from './data.js';
-
-const mapCanvas = document.querySelector('#map-canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const imgTemplate = document.querySelector('#card').content.querySelector('.popup__photo');
-
-const objectsList = createObjects();
-
-const cardFragment = document.createDocumentFragment();
 
 const typeDict = {
   flat:     'Квартира',
@@ -32,7 +25,7 @@ const featuresDict = {
   conditioner: '.popup__feature--conditioner',
 };
 
-objectsList.forEach(({author, offer}) => {
+const createPopupEl = ({author, offer}) => {
   const cardElement = cardTemplate.cloneNode(true);
   for (const key in offer) {
     if (offer[key]) {
@@ -65,7 +58,7 @@ objectsList.forEach(({author, offer}) => {
     }
   }
   cardElement.querySelector('.popup__avatar').setAttribute('src', author.avatar);
-  cardFragment.appendChild(cardElement);
-});
+  return cardElement;
+};
 
-mapCanvas.appendChild(cardFragment);
+export { createPopupEl };

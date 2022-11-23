@@ -33,6 +33,16 @@ const timeInEl = adformEl.querySelector('#timein');
 const timeOutEl = adformEl.querySelector('#timeout');
 const roomNumberEl = adformEl.querySelector('#room_number');
 const capacityEl = adformEl.querySelector('#capacity');
+const addressEl = adformEl.querySelector('#address');
+const sliderEl = adformEl.querySelector('.ad-form__slider');
+
+
+const SliderConfig = {
+  MIN: 0,
+  MAX: 100000,
+  START: priceEl.placeholder,
+  STEP:1,
+};
 
 const disableForm = () => {
   adformEl.classList.add('ad-form--disabled');
@@ -56,6 +66,10 @@ const enableForm = () => {
   mapFiltersEl.querySelector('fieldset').removeAttribute('disabled');
 };
 
+const setAddress = ({lat, lng}) => {
+  addressEl.value = `${lat.toFixed(5)}, ${lng.toFixed(5)} `;
+};
+
 const pristine = new Pristine(
   adformEl,
   {
@@ -65,6 +79,33 @@ const pristine = new Pristine(
   },
   true
 );
+
+noUiSlider.create(sliderEl, {
+  range: {
+    min: SliderConfig.MIN,
+    max: SliderConfig.MAX,
+  },
+  start: SliderConfig.START,
+  step: SliderConfig.STEP,
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return value;
+    },
+  },
+});
+
+sliderEl.noUiSlider.on('update', () => {
+  priceEl.value = sliderEl.noUiSlider.get();
+});
+
+priceEl.addEventListener('change', (evt) => {
+  if (evt.target.value) {
+    sliderEl.noUiSlider.set(evt.target.value);
+  }
+});
 
 const validateCapacity = () =>
   RoomsToGuests[roomNumberEl.value].includes(capacityEl.value);
@@ -97,6 +138,7 @@ const onTimeInChange = () => {
 const onTimeOutChange = () => {
   timeInEl.value = timeOutEl.value;
 };
+
 capacityEl.addEventListener('change', onCapacityChange);
 roomNumberEl.addEventListener('change', onRoomNumberChange);
 timeInEl.addEventListener('change', onTimeInChange);
@@ -117,4 +159,4 @@ pristine.addValidator(
   validatePrice,
   getPriceErrorMessage,
 );
-export {disableForm, enableForm};
+export {disableForm, enableForm, setAddress};
