@@ -1,4 +1,5 @@
-import { objectsList } from "./card";
+import { createPopupEl } from './card.js';
+
 const OFFERS = 10;
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
@@ -48,7 +49,21 @@ const createPinMarkers = (offers) => {
         icon: pinIcon,
       },
     );
-    marker.addTo(markerGroup).bindPopup(objectsList(offer));
+    marker.addTo(markerGroup).bindPopup(createPopupEl(offer));
   });
 };
-markerGroup.clearLayers();
+
+const setPins = (offers) => {
+  markerGroup.clearLayers();
+  createPinMarkers(offers.slice(0, OFFERS));
+};
+
+const setOnMapLoad = (callback) => {
+  map.on('load', callback);
+};
+
+const setOnMainPinMove = (callback) => {
+  mainPinMarker.on('move', (evt) => callback(evt.target.getLatLng()));
+};
+
+export {initialMap, setPins, setOnMapLoad, setOnMainPinMove};

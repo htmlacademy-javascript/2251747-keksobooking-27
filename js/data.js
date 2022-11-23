@@ -79,11 +79,11 @@ const createAuthor = (index) => ({
 });
 
 const getRandomLat = () => getRandomFloat(Location.MIN_LAT, Location.MAX_LAT, 5);
-const getRandomLong = () => getRandomFloat(Location.MIN_LONG, Location.MAX_LONG, 5);
+const getRandomLng = () => getRandomFloat(Location.MIN_LONG, Location.MAX_LONG, 5);
 
-const createOffer = () => ({
+const createOffers = () => ({
   title: getRandomArrayElement(titles),
-  address: `${getRandomLat()}, ${getRandomLong()}`,
+  address: `${getRandomLat()}, ${getRandomLng()}`,
   price: getRandomInt(Price.MIN, Price.MAX),
   type: getRandomArrayElement(types),
   rooms: getRandomInt(Guest.MIN, Guest.MAX),
@@ -97,12 +97,12 @@ const createOffer = () => ({
 
 const createLoc = () => ({
   lat: getRandomLat(),
-  long: getRandomLong(),
+  lng: getRandomLng(),
 });
 
 const createObj = (el, index) => ({
   author: createAuthor(index + 1),
-  offer: createOffer(),
+  offer: createOffers(),
   location: createLoc(),
 });
 

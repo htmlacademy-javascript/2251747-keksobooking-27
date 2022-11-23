@@ -408,9 +408,9 @@ fieldset {
 }
 
 .ad-form__slider.noUi-target:not(#fake-id) {
-  width: calc(100% - 20px);
+  width: calc(100% - 32px);
   height: 5px;
-  transform: translateY(-2px);
+  transform: translate(100%, -7px);
 }
 
 .ad-form__slider:not(#fake-id) .noUi-connect {
