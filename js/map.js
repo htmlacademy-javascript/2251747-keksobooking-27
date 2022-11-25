@@ -1,4 +1,7 @@
 import { createPopupEl } from './card.js';
+import { setAddress } from './form.js';
+import { START_COORDINATE } from './util.js';
+import {getDataFunc} from './util.js';
 
 const OFFERS = 10;
 const map = L.map('map-canvas');
@@ -26,16 +29,26 @@ const mainPinMarker = L.marker(
   },
 );
 
-const initialMap = (coordinate) => {
-  map.setView(coordinate, 10);
+const setOnMainPinMove = (callback) => {
+  mainPinMarker.on('move', (evt) => callback(evt.target.getLatLng()));
+};
+
+const setOnMapLoad = (callback) => {
+  map.on('load', callback);
+};
+
+const initializeMap = () => {
+  map.setView(START_COORDINATE, 10);
+  mainPinMarker.addTo(map);
+  mainPinMarker.setLatLng(START_COORDINATE);
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>',
     },
   ).addTo(map);
-  mainPinMarker.addTo(map);
-  mainPinMarker.setLatLng(coordinate);
+  setOnMainPinMove(setAddress);
+  setOnMapLoad(getDataFunc());
 };
 
 const createPinMarkers = (offers) => {
@@ -53,17 +66,10 @@ const createPinMarkers = (offers) => {
   });
 };
 
+
 const setPins = (offers) => {
   markerGroup.clearLayers();
   createPinMarkers(offers.slice(0, OFFERS));
 };
 
-const setOnMapLoad = (callback) => {
-  map.on('load', callback);
-};
-
-const setOnMainPinMove = (callback) => {
-  mainPinMarker.on('move', (evt) => callback(evt.target.getLatLng()));
-};
-
-export {initialMap, setPins, setOnMapLoad, setOnMainPinMove};
+export {initializeMap, setPins};

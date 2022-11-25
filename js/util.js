@@ -1,3 +1,9 @@
+import { getData } from './api.js';
+import {enableForm} from './form.js';
+import { setPins } from './map.js';
+import { showMessage } from './messages.js';
+
+
 function getRandomInt (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -15,10 +21,27 @@ function getRandomFloat (min,max, count) {
   } return NaN;
 }
 
+const START_COORDINATE = {
+  lat: 35.67285,
+  lng: 139.81741,
+};
+
+const getDataFunc = () => {
+  getData(
+    (items) => {
+      enableForm();
+      setPins(items);
+    },
+    () => showMessage('load-error', true, () => getDataFunc())
+  );
+};
+
 const getRandomArrayElement = (array) => array[getRandomInt(0, array.length - 1)];
 
 export {
   getRandomArrayElement,
   getRandomInt,
   getRandomFloat,
+  getDataFunc,
+  START_COORDINATE
 };

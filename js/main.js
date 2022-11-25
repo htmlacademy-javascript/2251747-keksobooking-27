@@ -1,22 +1,9 @@
-import {createObjects} from './data.js';
-import './card.js';
-import {enableForm, disableForm, setAddress} from './form.js';
-import { initialMap, setOnMainPinMove, setOnMapLoad, setPins } from './map.js';
+import { disableForm} from './form.js';
+import { initializeMap } from './map.js';
+import {initializeForm} from './form.js';
 
-
-const START_COORDINATE = {
-  lat: 35.67285,
-  lng: 139.81741,
-};
-
-const offers = createObjects();
-
-setOnMapLoad(() => {
-  setOnMainPinMove(setAddress);
-  setAddress(START_COORDINATE);
-  enableForm();
-  setPins(offers);
-});
+initializeForm();
 
 disableForm();
-initialMap(START_COORDINATE);
+
+initializeMap();
