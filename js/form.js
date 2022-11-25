@@ -1,3 +1,7 @@
+import { sendData } from './api.js';
+import {START_COORDINATE} from './util.js';
+import { showMessage } from './messages.js';
+
 const RoomsToGuests = {
   1: ['1'],
   2: ['1', '2'],
@@ -35,6 +39,7 @@ const roomNumberEl = adformEl.querySelector('#room_number');
 const capacityEl = adformEl.querySelector('#capacity');
 const addressEl = adformEl.querySelector('#address');
 const sliderEl = adformEl.querySelector('.ad-form__slider');
+const submitButton = adformEl.querySelector('.ad-form__submit');
 
 
 const SliderConfig = {
@@ -68,6 +73,11 @@ const enableForm = () => {
 
 const setAddress = ({lat, lng}) => {
   addressEl.value = `${lat.toFixed(5)}, ${lng.toFixed(5)} `;
+};
+
+const resetForm = () => {
+  adformEl.reset();
+  sliderEl.noUiSlider.set(priceEl.value);
 };
 
 const pristine = new Pristine(
@@ -159,4 +169,43 @@ pristine.addValidator(
   validatePrice,
   getPriceErrorMessage,
 );
-export {disableForm, enableForm, setAddress};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setFormSubmit = () => {
+  adformEl.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          showMessage('success');
+          unblockSubmitButton();
+          resetForm();
+        },
+        () => {
+          showMessage('error', true);
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+const initializeForm = () => {
+  setAddress(START_COORDINATE);
+  setFormSubmit();
+};
+
+export {disableForm, enableForm, setAddress, initializeForm};
