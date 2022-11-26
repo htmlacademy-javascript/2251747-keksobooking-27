@@ -1,6 +1,6 @@
 import { getData } from './api.js';
+import { enableFilters, setOffers } from './filter.js';
 import {enableForm} from './form.js';
-import { setPins } from './map.js';
 import { showMessage } from './messages.js';
 
 
@@ -26,11 +26,20 @@ const START_COORDINATE = {
   lng: 139.81741,
 };
 
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 const getDataFunc = () => {
   getData(
     (items) => {
       enableForm();
-      setPins(items);
+      enableFilters();
+      setOffers(items);
     },
     () => showMessage('load-error', true, () => getDataFunc())
   );
@@ -43,5 +52,6 @@ export {
   getRandomInt,
   getRandomFloat,
   getDataFunc,
-  START_COORDINATE
+  START_COORDINATE,
+  debounce
 };

@@ -27,10 +27,8 @@ const TypesToPrice = {
 
 
 const adformEl = document.querySelector('.ad-form');
-const mapFiltersEl = document.querySelector('.map__filters');
 
 const adformFieldsets = adformEl.querySelectorAll('fieldset');
-const mapFiltersSelects = mapFiltersEl.querySelectorAll('select');
 const typeEl = adformEl.querySelector('#type');
 const priceEl = adformEl.querySelector('#price');
 const timeInEl = adformEl.querySelector('#timein');
@@ -54,10 +52,6 @@ const disableForm = () => {
   adformFieldsets.forEach((fieldset) => {
     fieldset.setAttribute('disabled', true);
   });
-  mapFiltersSelects.forEach((select) => {
-    select.setAttribute('disabled', true);
-  });
-  mapFiltersEl.querySelector('fieldset').setAttribute('disabled', true);
 };
 
 const enableForm = () => {
@@ -65,10 +59,6 @@ const enableForm = () => {
   adformFieldsets.forEach((fieldset) => {
     fieldset.removeAttribute('disabled');
   });
-  mapFiltersSelects.forEach((select) => {
-    select.removeAttribute('disabled');
-  });
-  mapFiltersEl.querySelector('fieldset').removeAttribute('disabled');
 };
 
 const setAddress = ({lat, lng}) => {
