@@ -3,7 +3,6 @@ import { setAddress } from './form.js';
 import { START_COORDINATE } from './util.js';
 import {getDataFunc} from './util.js';
 
-const OFFERS = 10;
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
 
@@ -69,7 +68,7 @@ const createPinMarkers = (offers) => {
 
 const setPins = (offers) => {
   markerGroup.clearLayers();
-  createPinMarkers(offers.slice(0, OFFERS));
+  createPinMarkers(offers);
 };
 
 export {initializeMap, setPins};
