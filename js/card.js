@@ -28,14 +28,16 @@ const featuresDict = {
 const createPopupEl = ({author, offer}) => {
   const cardElement = cardTemplate.cloneNode(true);
   for (const key in offer) {
-    if (typeof(offer[key]) !== 'undefined' && offer[key] !== null) {
+    //нужно чтоб проверяло на undefined и null (не offer[key] !== null, а offer[key] != null) но линтеру так не нравится
+    if (offer[key] != null) {
       if (key === 'features') {
         for (const feature in featuresDict) {
           if (!offer.features.includes(feature)) {
             cardElement.querySelector(featuresDict[feature]).classList.add('hidden');
           }
         }
-      } else if (key === 'rooms' && (typeof(offer.guests) !== 'undefined' && offer.guests !== null)) {
+        //тут тоже самое
+      } else if (key === 'rooms' && offer.guests != null) {
         cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
       } else if (key === 'checkin' && offer.checkout) {
         cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
