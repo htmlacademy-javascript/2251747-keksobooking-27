@@ -25,6 +25,8 @@ const TypesToPrice = {
   max: 100000,
 };
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR = 'img/muffin-grey.svg';
 
 const adformEl = document.querySelector('.ad-form');
 
@@ -38,6 +40,10 @@ const capacityEl = adformEl.querySelector('#capacity');
 const addressEl = adformEl.querySelector('#address');
 const sliderEl = adformEl.querySelector('.ad-form__slider');
 const submitButton = adformEl.querySelector('.ad-form__submit');
+const avatarEl = adformEl.querySelector('#avatar');
+const avatarPreview = adformEl.querySelector('.ad-form-header__preview img');
+const imagesEl = adformEl.querySelector('#images');
+const imagesPreviewBox = adformEl.querySelector('.ad-form__photo');
 
 
 const SliderConfig = {
@@ -65,11 +71,6 @@ const setAddress = ({lat, lng}) => {
   addressEl.value = `${lat.toFixed(5)}, ${lng.toFixed(5)} `;
 };
 
-const resetForm = () => {
-  adformEl.reset();
-  sliderEl.noUiSlider.set(priceEl.value);
-};
-
 const pristine = new Pristine(
   adformEl,
   {
@@ -79,6 +80,14 @@ const pristine = new Pristine(
   },
   true
 );
+
+const resetForm = () => {
+  adformEl.reset();
+  pristine.reset();
+  sliderEl.noUiSlider.set(priceEl.value);
+  imagesPreviewBox.innerHTML = '';
+  avatarPreview.src = DEFAULT_AVATAR;
+};
 
 noUiSlider.create(sliderEl, {
   range: {
@@ -121,6 +130,11 @@ const getRoomNumberErrorMessage = () =>
 const getPriceErrorMessage = () =>
   `Минимальная цена для этого типа жилья ${TypesToPrice[typeEl.value]} руб.`;
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
 const onCapacityChange = () => {
   pristine.validate(capacityEl);
   pristine.validate(roomNumberEl);
@@ -139,10 +153,32 @@ const onTimeOutChange = () => {
   timeInEl.value = timeOutEl.value;
 };
 
+
+const onAvatarChange = () => {
+  const file = avatarEl.files[0];
+  if (file && isValidType(file)) {
+    avatarPreview.src = URL.createObjectURL(file);
+  }
+};
+
+const onImagesChange = () => {
+  const file = imagesEl.files[0];
+  if (file && isValidType(file)) {
+    imagesPreviewBox.innerHTML = '';
+    const image = document.createElement('img');
+    image.src = URL.createObjectURL(file);
+    image.style.maxWidth = '100%' ;
+    image.style.height = 'auto' ;
+    imagesPreviewBox.append(image);
+  }
+};
+
 capacityEl.addEventListener('change', onCapacityChange);
 roomNumberEl.addEventListener('change', onRoomNumberChange);
 timeInEl.addEventListener('change', onTimeInChange);
 timeOutEl.addEventListener('change', onTimeOutChange);
+avatarEl.addEventListener('change', onAvatarChange);
+imagesEl.addEventListener('change', onImagesChange);
 
 pristine.addValidator(
   capacityEl,
@@ -160,6 +196,7 @@ pristine.addValidator(
   getPriceErrorMessage,
 );
 
+
 const blockSubmitButton = () => {
   submitButton.disabled = true;
   submitButton.textContent = 'Публикую...';
@@ -170,7 +207,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const setFormSubmit = () => {
+const setFormSubmitAndReset = () => {
   adformEl.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -191,11 +228,14 @@ const setFormSubmit = () => {
       );
     }
   });
+  adformEl.addEventListener('reset', () => {
+    resetForm();
+  });
 };
 
 const initializeForm = () => {
   setAddress(START_COORDINATE);
-  setFormSubmit();
+  setFormSubmitAndReset();
 };
 
 export {disableForm, enableForm, setAddress, initializeForm};
