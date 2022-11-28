@@ -62,4 +62,3 @@ const createPopupEl = ({author, offer}) => {
 };
 
 export { createPopupEl };
-
