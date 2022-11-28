@@ -29,6 +29,7 @@ const createPopupEl = ({author, offer}) => {
   const cardElement = cardTemplate.cloneNode(true);
   for (const key in offer) {
     //нужно чтоб проверяло на undefined и null (не offer[key] !== null, а offer[key] != null) но линтеру так не нравится
+    // eslint-disable-next-line eqeqeq
     if (offer[key] != null) {
       if (key === 'features') {
         for (const feature in featuresDict) {
@@ -37,6 +38,7 @@ const createPopupEl = ({author, offer}) => {
           }
         }
         //тут тоже самое
+      // eslint-disable-next-line eqeqeq
       } else if (key === 'rooms' && offer.guests != null) {
         cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
       } else if (key === 'checkin' && offer.checkout) {
